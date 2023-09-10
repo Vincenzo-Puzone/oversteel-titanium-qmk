@@ -8,14 +8,17 @@
 
 enum layer_names {
     _BASE,
-    _FN,
     _GAME,
-    _CL
+    _NKEY,
+    _FN,
+    _CL,
+    _NK
 };
 
 enum layer_keycodes {
   BASE = SAFE_RANGE,
-  GAME
+  GAME,
+  NKEY
 };
 
 const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
@@ -87,6 +90,15 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
                 KC_LCTL, KC_NO,   KC_LALT,                            KC_SPC,                             KC_RALT, MO(_CL), KC_APP,  KC_RCTL, KC_LEFT, KC_DOWN,  KC_RIGHT,          KC_P0,   KC_PDOT
             ),
 
+    [_NKEY]   = LAYOUT_iso(
+                KC_NO,        KC_NO, KC_NO, KC_NO, KC_NO, KC_NO, KC_NO, KC_NO, KC_NO, KC_NO, KC_NO, KC_NO, KC_NO, KC_NO, KC_NO, KC_NO,
+                KC_NO, KC_NO, KC_NO, KC_NO, KC_NO, KC_NO, KC_NO, KC_NO, KC_NO, KC_NO, KC_NO, KC_NO, KC_NO, KC_NO, KC_NO, KC_NO, KC_NO,   KC_NO, KC_NO, KC_NO,  KC_NO,
+                KC_NO, KC_NO, KC_NO, KC_NO, KC_NO, KC_NO, KC_NO, KC_NO, KC_NO, KC_NO, KC_NO, KC_NO, KC_NO, KC_NO, KC_NO, KC_NO, KC_NO,   KC_NO, KC_NO, KC_NO,  KC_NO,
+                KC_NO, KC_NO, KC_NO, KC_NO, KC_NO, KC_NO, KC_NO, KC_NO, KC_NO, KC_NO, KC_NO, KC_NO, KC_NO, KC_NO,                              KC_NO, KC_NO, KC_NO,
+                KC_NO, KC_NO, KC_NO, KC_NO, KC_NO, KC_NO, KC_NO, KC_NO, KC_NO, KC_NO, KC_NO, KC_NO,          KC_NO,          KC_NO,            KC_NO, KC_NO, KC_NO,  KC_NO,
+                KC_NO, KC_NO, KC_NO,                             KC_NO,                             KC_NO, MO(_NK), KC_NO, KC_NO, KC_NO, KC_NO,  KC_NO,           KC_NO, KC_NO
+            ),
+
 /*
        ┌───┐   ┌───┬───┬───┬───┐ ┌───┬───┬───┬───┐ ┌───┬───┬───┬───┐ ┌───┬───┬───┐
        │Rst│   │Hom│VoD│VoU│Mut│ │Stp│Prv│Ply│Nxt│ │Mai│Hom│Cal│Sch│ │   │   │   │
@@ -105,7 +117,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 */
     /*  Row:    0        1        2        3        4        5        6        7        8        9        10       11       12       13       14       15        16        17       18       19       20     */
     [_FN]   = LAYOUT_iso(
-                RESET,            KC_WHOM, KC_VOLD, KC_VOLU, KC_MUTE, KC_MSTP, KC_MPRV, KC_MPLY, KC_MNXT, KC_MAIL, KC_WHOM, KC_CALC, KC_WSCH, _______, _______,  _______,
+                RESET,            KC_MSEL, KC_VOLD, KC_VOLU, KC_MUTE, KC_MSTP, KC_MPRV, KC_MPLY, KC_MNXT, KC_MAIL, KC_WHOM, NKEY   , KC_CALC, _______, _______,  _______,
                 _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, RGB_SPD, RGB_SPI, _______, RGB_MOD, RGB_RMOD, RGB_TOG,  _______, _______, _______,  _______,
                 _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______,  _______,  _______, _______, _______,  _______,
                 _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______,                              _______, _______, _______,
@@ -131,12 +143,23 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 */
     /*  Row:    0        1        2        3        4        5        6        7        8        9        10       11       12       13       14       15        16        17       18       19       20     */
     [_CL]   = LAYOUT_iso(
-                RESET,            KC_WHOM, KC_VOLD, KC_VOLU, KC_MUTE, KC_MSTP, KC_MPRV, KC_MPLY, KC_MNXT, KC_MAIL, KC_WHOM, KC_CALC, KC_WSCH, _______, _______,  _______,
+                RESET,            KC_MSEL, KC_VOLD, KC_VOLU, KC_MUTE, KC_MSTP, KC_MPRV, KC_MPLY, KC_MNXT, KC_MAIL, KC_WHOM, KC_CALC, KC_WSCH, _______, _______,  _______,
                 _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, RGB_SPD, RGB_SPI, _______, RGB_MOD, RGB_RMOD, RGB_TOG,  _______, _______, _______,  _______,
                 _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______,  _______,  _______, _______, _______,  _______,
                 _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______,                              _______, _______, _______,
                 _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______,          _______,          RGB_VAI,            _______, _______, _______,  _______,
                 _______, BASE,    _______,                            _______,                            _______, MO(_CL), _______, _______, RGB_SPD, RGB_VAD,  RGB_SPI,           _______, _______
+            ),
+
+
+     /*  Row:    0        1        2        3        4        5        6        7        8        9        10       11       12       13       14       15        16        17       18       19       20     */
+    [_NK]   = LAYOUT_iso(
+                _______,          _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, BASE   , _______, _______, _______,  _______,
+                _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______,  _______,  _______, _______, _______,  _______,
+                _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______,  _______,  _______, _______, _______,  _______,
+                _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______,                              _______, _______, _______,
+                _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______,          _______,          _______,            _______, _______, _______,  _______,
+                _______, _______, _______,                            _______,                            _______, MO(_NK), _______, _______, _______, _______,  _______,           _______, _______
             ),
 };
 
@@ -151,6 +174,12 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
     case GAME:
       if (record->event.pressed) {
         set_single_persistent_default_layer(_GAME);
+      }
+      return false;
+      break;
+    case NKEY:
+      if (record->event.pressed) {
+        set_single_persistent_default_layer(_NKEY);
       }
       return false;
       break;
