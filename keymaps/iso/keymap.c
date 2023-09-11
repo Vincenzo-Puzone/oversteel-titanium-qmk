@@ -106,14 +106,14 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
        │    │    │    │                        │    │ Fn │    │    │ │   │   │   │ │       │   │   │
        └────┴────┴────┴────────────────────────┴────┴────┴────┴────┘ └───┴───┴───┘ └───────┴───┴───┘
 */
-
+    /*  Row:    0        1        2        3        4        5        6        7        8        9        10       11       12       13       14       15        16        17       18       19       20     */
     [_NKEY]   = LAYOUT_iso(
-                KC_NO,        KC_NO, KC_NO, KC_NO, KC_NO, KC_NO, KC_NO, KC_NO, KC_NO, KC_NO, KC_NO, KC_NO, KC_NO, KC_NO, KC_NO, KC_NO,
-                KC_NO, KC_NO, KC_NO, KC_NO, KC_NO, KC_NO, KC_NO, KC_NO, KC_NO, KC_NO, KC_NO, KC_NO, KC_NO, KC_NO, KC_NO, KC_NO, KC_NO,   KC_NO, KC_NO, KC_NO,  KC_NO,
-                KC_NO, KC_NO, KC_NO, KC_NO, KC_NO, KC_NO, KC_NO, KC_NO, KC_NO, KC_NO, KC_NO, KC_NO, KC_NO, KC_NO, KC_NO, KC_NO, KC_NO,   KC_NO, KC_NO, KC_NO,  KC_NO,
-                KC_NO, KC_NO, KC_NO, KC_NO, KC_NO, KC_NO, KC_NO, KC_NO, KC_NO, KC_NO, KC_NO, KC_NO, KC_NO, KC_NO,                              KC_NO, KC_NO, KC_NO,
-                KC_NO, KC_NO, KC_NO, KC_NO, KC_NO, KC_NO, KC_NO, KC_NO, KC_NO, KC_NO, KC_NO, KC_NO,          KC_NO,          KC_NO,            KC_NO, KC_NO, KC_NO,  KC_NO,
-                KC_NO, KC_NO, KC_NO,                             KC_NO,                             KC_NO, MO(_NK), KC_NO, KC_NO, KC_NO, KC_NO,  KC_NO,           KC_NO, KC_NO
+                KC_NO,            KC_NO,   KC_NO,   KC_NO,   KC_NO,   KC_NO,   KC_NO,   KC_NO,   KC_NO,   KC_NO,   KC_NO,   KC_NO,   KC_NO,   KC_NO,   KC_NO,    KC_NO,
+                KC_NO,   KC_NO,   KC_NO,   KC_NO,   KC_NO,   KC_NO,   KC_NO,   KC_NO,   KC_NO,   KC_NO,   KC_NO,   KC_NO,   KC_NO,   KC_NO,   KC_NO,   KC_NO,    KC_NO,    KC_NO,   KC_NO,   KC_NO,   KC_NO,
+                KC_NO,   KC_NO,   KC_NO,   KC_NO,   KC_NO,   KC_NO,   KC_NO,   KC_NO,   KC_NO,   KC_NO,   KC_NO,   KC_NO,   KC_NO,   KC_NO,   KC_NO,   KC_NO,    KC_NO,    KC_NO,   KC_NO,   KC_NO,   KC_NO,
+                KC_NO,   KC_NO,   KC_NO,   KC_NO,   KC_NO,   KC_NO,   KC_NO,   KC_NO,   KC_NO,   KC_NO,   KC_NO,   KC_NO,   KC_NO,   KC_NO,                                KC_NO,   KC_NO,   KC_NO,
+                KC_NO,   KC_NO,   KC_NO,   KC_NO,   KC_NO,   KC_NO,   KC_NO,   KC_NO,   KC_NO,   KC_NO,   KC_NO,   KC_NO,            KC_NO,            KC_NO,              KC_NO,   KC_NO,   KC_NO,   KC_NO,
+                KC_NO,   KC_NO,   KC_NO,                              KC_NO,                              KC_NO,   MO(_NK), KC_NO,   KC_NO,   KC_NO,   KC_NO,    KC_NO,             KC_NO,   KC_NO
             ),
 
 /*
@@ -160,7 +160,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 */
     /*  Row:    0        1        2        3        4        5        6        7        8        9        10       11       12       13       14       15        16        17       18       19       20     */
     [_CL]   = LAYOUT_iso(
-                RESET  ,          KC_MSEL, KC_VOLD, KC_VOLU, KC_MUTE, KC_MSTP, KC_MPRV, KC_MPLY, KC_MNXT, KC_MAIL, KC_WHOM, KC_CALC, KC_WSCH, _______, RGB_RMOD, RGB_TOG,
+                RESET  ,          KC_MSEL, KC_VOLD, KC_VOLU, KC_MUTE, KC_MSTP, KC_MPRV, KC_MPLY, KC_MNXT, KC_MAIL, KC_WHOM, NKEY   , KC_CALC, _______, RGB_RMOD, RGB_TOG,
                 _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, RGB_SPD, RGB_SPI, _______, RGB_MOD, _______,   _______,  _______, _______, _______,  _______,
                 _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______,  _______,  _______, _______, _______,  _______,
                 _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______,                              _______, _______, _______,
@@ -196,26 +196,35 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
             ),
 };
 
+void matrix_init_kb(void) {
+    // Inizializzazione LED personalizzato
+    setPinOutput(LED_WIN_LOCK);
+    writePin(LED_WIN_LOCK, !LED_PIN_ON_STATE);
+}
+
+
 bool process_record_user(uint16_t keycode, keyrecord_t *record) {
   switch (keycode) {
     case BASE:
-      if (record->event.pressed) {
-        set_single_persistent_default_layer(_BASE);
-      }
-      return false;
-      break;
+            if (record->event.pressed) {
+                set_single_persistent_default_layer(_BASE);
+                writePin(LED_WIN_LOCK, !LED_PIN_ON_STATE);
+            }
+            return false;
+            break;
     case GAME:
-      if (record->event.pressed) {
-        set_single_persistent_default_layer(_GAME);
-      }
-      return false;
-      break;
+            if (record->event.pressed) {
+                set_single_persistent_default_layer(_GAME);
+                writePin(LED_WIN_LOCK, LED_PIN_ON_STATE);
+            }
+            return false;
+            break;
     case NKEY:
-      if (record->event.pressed) {
-        set_single_persistent_default_layer(_NKEY);
-      }
-      return false;
-      break;
+            if (record->event.pressed) {
+                set_single_persistent_default_layer(_NKEY);
+            }
+            return false;
+            break;
   }
   return true;
 }
