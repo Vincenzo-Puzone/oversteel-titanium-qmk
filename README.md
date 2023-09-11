@@ -7,4 +7,4 @@ Using stock QMK without following the documentation above will produce a firmwar
 **MISSING:** 
 - Side RGB Customization  
 - ~Parity with Stock Behavior/FN keys~ (i think is fixed but idk)
-- Led status for block scroll
+- Led status for _GAME layout
