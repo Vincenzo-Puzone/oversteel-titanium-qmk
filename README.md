@@ -6,11 +6,21 @@ Using stock QMK without following the documentation above will produce a firmwar
 
 Firmware should be feature complete
 
+## Building this firmware
+
+This keyboard requires [SonixQMK](https://github.com/SonixQMK/qmk_firmware) — specifically
+the **`sn32_master_openrgb`** branch, which adds OpenRGB support for Sonix SN32F2xx MCUs.
+```bash
+   git clone https://github.com/SonixQMK/qmk_firmware.git qmk_orgb
+   cd qmk_orgb
+   git checkout sn32_master_openrgb
+```
+
 ## Side LED fix — core patch required
 
 To build this firmware with the side LED fixes applied, you need to apply the patch in
 [`patches/side-leds-gb-swap-core.patch`](patches/side-leds-gb-swap-core.patch) to your
-**SonixQMK core checkout** (not to this repository) before compiling. This patch modifies
+**SonixQMK Environment** (not to this repository) before compiling. This patch modifies
 `drivers/led/sn32/rgb_matrix_sn32f24xb.c` to swap the G/B channels for LED indices 106-111
 (the side LEDs), which are wired with inverted green/blue pins on the PCB.
 
