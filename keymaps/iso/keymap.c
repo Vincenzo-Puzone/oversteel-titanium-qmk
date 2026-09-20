@@ -202,6 +202,12 @@ void matrix_init_kb(void) {
     writePin(LED_WIN_LOCK, !LED_PIN_ON_STATE);
 }
 
+// Il fix del canale G/B invertito per i 6 LED laterali (indici 106-111) ora vive nel
+// driver stesso (drivers/led/sn32/rgb_matrix_sn32f24xb.c, via le macro
+// RGB_MATRIX_SWAP_GB_LED_MIN/MAX definite in config_led.h) invece che qui: farlo qui
+// causava un doppio-scambio intermittente (colori che a volte tornavano quelli
+// sbagliati per un fotogramma, con lampi bianchi) perche' questo hook non gira alla
+// stessa cadenza della scansione hardware reale.
 
 bool process_record_user(uint16_t keycode, keyrecord_t *record) {
   switch (keycode) {

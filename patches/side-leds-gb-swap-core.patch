@@ -1,0 +1,31 @@
+diff --git a/drivers/led/sn32/rgb_matrix_sn32f24xb.c b/drivers/led/sn32/rgb_matrix_sn32f24xb.c
+index 73ccab28..620b0555 100644
+--- a/drivers/led/sn32/rgb_matrix_sn32f24xb.c
++++ b/drivers/led/sn32/rgb_matrix_sn32f24xb.c
+@@ -304,13 +304,24 @@ void update_pwm_channels(PWMDriver *pwmp) {
+         if (led_state[led_index].b != 0) enable_pwm |= true;
+         if (led_state[led_index].g != 0) enable_pwm |= true;
+         if (led_state[led_index].r != 0) enable_pwm |= true;
++#if defined(RGB_MATRIX_SWAP_GB_LED_MIN) && defined(RGB_MATRIX_SWAP_GB_LED_MAX)
++        // Alcuni LED extra (tipicamente accenti laterali cablati su un footprint
++        // diverso da quello dei tasti normali) hanno i piedini G/B fisicamente
++        // invertiti sul PCB. Lo correggiamo qui, all'uscita fisica verso il PWM,
++        // leggendo led_state[] fresco ad ogni scansione: cosi' non c'e' rischio di
++        // doppio scambio (che si avrebbe invertendo i valori in led_state[] stesso
++        // in un punto che non gira alla stessa cadenza della scansione hardware).
++        bool swap_gb = (led_index >= RGB_MATRIX_SWAP_GB_LED_MIN && led_index <= RGB_MATRIX_SWAP_GB_LED_MAX);
++#else
++        const bool swap_gb = false;
++#endif
+         // Update matching RGB channel PWM configuration
+         switch(current_row % LED_MATRIX_ROW_CHANNELS) {
+         case 0:
+-                if(enable_pwm) pwmEnableChannelI(pwmp,chan_col_order[col_idx],led_state[led_index].b);
++                if(enable_pwm) pwmEnableChannelI(pwmp,chan_col_order[col_idx], swap_gb ? led_state[led_index].g : led_state[led_index].b);
+             break;
+         case 1:
+-                if(enable_pwm) pwmEnableChannelI(pwmp,chan_col_order[col_idx],led_state[led_index].g);
++                if(enable_pwm) pwmEnableChannelI(pwmp,chan_col_order[col_idx], swap_gb ? led_state[led_index].b : led_state[led_index].g);
+             break;
+         case 2:
+                 if(enable_pwm) pwmEnableChannelI(pwmp,chan_col_order[col_idx],led_state[led_index].r);
