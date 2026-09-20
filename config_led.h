@@ -13,4 +13,12 @@
 #define LED_MATRIX_COLS MATRIX_COLS
 #define LED_MATRIX_COL_PINS MATRIX_COL_PINS
 
-#define DRIVER_LED_TOTAL (106)
+// 106 tasti + 6 LED laterali (3 destra + 3 sinistra), vedi config_led.c
+#define DRIVER_LED_TOTAL (112)
+
+// I LED 106-111 (i 6 laterali) hanno i piedini G/B invertiti sul PCB rispetto ai
+// LED normali dei tasti: queste macro dicono al driver (drivers/led/sn32/
+// rgb_matrix_sn32f24xb.c) di scambiare i due canali solo per questo intervallo di
+// indici, direttamente in uscita verso il PWM.
+#define RGB_MATRIX_SWAP_GB_LED_MIN 106
+#define RGB_MATRIX_SWAP_GB_LED_MAX 111
